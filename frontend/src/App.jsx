@@ -3,21 +3,20 @@ import { useState } from "react";
 
 const App = () => {
 
-  const movieSchema = {
-    movieName: "",
-    ProducerName: "",
-    DirectorName: "",
-    accterName: "",
-    acctressName: "",
-    MovieType: "",
-    movieLanguage: "",
-    RealingDate: "",
+  const studentSchema = {
+    studentName: "",
+    age: "",
+    gender: "",
+    course: "",
+    email: "",
+    phone: "",
+    address: "",
     createdBy: "",
     updatedBy: ""
   };
 
-  const [data, setData] = useState(movieSchema);
-  const [movies, setMovies] = useState([]);
+  const [data, setData] = useState(studentSchema);
+  const [students, setStudents] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,70 +27,72 @@ const App = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post( "http://localhost:5000/api/movie/create", data );
+      const res = await axios.post( "http://localhost:5000/api/student/create", data);
 
       alert(res.data.msg);
-      setData(movieSchema); 
-      fetchMovies(); 
+      setData(studentSchema);
+      fetchStudents();
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Get 
-  const fetchMovies = async () => {
-    const res = await axios.get("http://localhost:5000/api/movie/get");
-    setMovies(res.data.data);
+  const fetchStudents = async () => {
+    const res = await axios.get( "http://localhost:5000/api/student/get" );
+    setStudents(res.data.data);
   };
 
   return (
     <>
-      <h1 style={{ textAlign: "center" }}>Movie Form</h1>
+      <h1 style={{ textAlign: "center" }}>Student Register Form</h1>
 
-      <form onSubmit={handleSubmit} style={{textAlign: "center"}} >
+      <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
 
-        <input type="text" name="movieName" placeholder="Movie Name"  value={data.movieName} onChange={handleChange} required />
+        <input type="text" name="studentName" placeholder="Student Name" value={data.studentName} onChange={handleChange} required />
         <br /><br />
 
-        <input type="text" name="ProducerName" placeholder="Producer Name" value={data.ProducerName} onChange={handleChange} required />
+        <input type="number" name="age" placeholder="Age" value={data.age} onChange={handleChange} required />
         <br /><br />
 
-        <input type="text" name="DirectorName" placeholder="Director Name"   value={data.DirectorName} onChange={handleChange} required />
+        <select name="gender" value={data.gender} onChange={handleChange} required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
         <br /><br />
 
-        <input type="text" name="accterName" placeholder="Actor Name" value={data.accterName} onChange={handleChange} required />
+        <input type="text" name="course" placeholder="Course" value={data.course} onChange={handleChange} required />
         <br /><br />
 
-        <input type="text" name="acctressName" placeholder="Actress Name" value={data.acctressName} onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email" value={data.email} onChange={handleChange} required />
         <br /><br />
 
-        <input type="text" name="MovieType" placeholder="Movie Type (Action, Comedy...)"  value={data.MovieType} onChange={handleChange} />
+        <input type="text" name="phone" placeholder="Phone Number" value={data.phone}  onChange={handleChange} required />
         <br /><br />
 
-        <input type="text" name="movieLanguage" placeholder="Movie Language"  value={data.movieLanguage} onChange={handleChange} />
+        <textarea name="address" placeholder="Address" value={data.address} onChange={handleChange} required />
         <br /><br />
 
-        <input type="date" name="RealingDate"  value={data.RealingDate} onChange={handleChange} />
+        <input type="text" name="createdBy"  placeholder="Created By" value={data.createdBy} onChange={handleChange} />
         <br /><br />
 
-        <input type="text" name="createdBy" placeholder="Created By" value={data.createdBy} onChange={handleChange} />
-        <br /><br />
-
-        <button type="submit">Submit</button>
+        <button type="submit">Register Student</button>
 
       </form>
 
       <hr />
 
       <div style={{ padding: "20px" }}>
-        <button onClick={fetchMovies}>Fetch Movies</button>
+        <button onClick={fetchStudents}>Fetch Students</button>
 
-        {movies.map((movie) => (
-          <div key={movie._id} style={{ border: "1px solid gray", margin: "10px", padding: "10px" }}>
-            <h3>{movie.movieName}</h3>
-            <p>Director: {movie.DirectorName}</p>
-            <p>Actor: {movie.accterName}</p>
-            <p>Status: {movie.status}</p>
+        {students.map((student) => (
+          <div key={student._id}
+            style={{ border: "1px solid gray", margin: "10px", padding: "10px" }}>
+            <h3>{student.studentName}</h3>
+            <p>Age: {student.age}</p>
+            <p>Course: {student.course}</p>
+            <p>Email: {student.email}</p>
+            <p>Status: {student.status}</p>
           </div>
         ))}
       </div>
