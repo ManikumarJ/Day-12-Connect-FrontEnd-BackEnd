@@ -38,8 +38,12 @@ const App = () => {
   };
 
   const fetchStudents = async () => {
-    const res = await axios.get( "http://localhost:5000/api/student/get" );
-    setStudents(res.data.data);
+    try {
+      const res = await axios.get("http://localhost:5000/api/student/getData");
+      setStudents(res.data.myDatas);
+    } catch (error) {
+      console.log("Fetch error:", error);
+    }
   };
 
   return (
@@ -71,9 +75,6 @@ const App = () => {
         <br /><br />
 
         <textarea name="address" placeholder="Address" value={data.address} onChange={handleChange} required />
-        <br /><br />
-
-        <input type="text" name="createdBy"  placeholder="Created By" value={data.createdBy} onChange={handleChange} />
         <br /><br />
 
         <button type="submit">Register Student</button>
